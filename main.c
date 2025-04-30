@@ -92,5 +92,7 @@ int main() {
         printf("---------\n");
     }
 
+    printf("teste git");
+
     return 0;
 }
