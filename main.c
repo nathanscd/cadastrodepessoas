@@ -33,9 +33,78 @@ PESSOA desempilhar(NO **pilha) {
   return pessoa;
 }
 
+void imprimirLista(NO *lista) {
+  NO *atual = lista;
+  while (atual != NULL) {
+    printf("Nome: %s, Idade: %d, Altura: %.2f\n", atual->p.Nome, atual->p.Idade, atual->p.Altura);
+    atual = atual->pont;
+  }
+  printf("-----------\n");
+}
+
+int tamanhoLista(NO *lista) {
+    int cont = 0;
+    NO *atual = lista;
+    while (atual != NULL) {
+        cont++;
+        atual = atual->pont;
+    }
+    return cont;
+}
+
+void bubbleSortPorIdade(NO **lista, int tam) {
+    for (int j = 1; j <= tam - 1; j++) {
+        NO *atual = *lista;
+        NO *prox = atual->pont;
+
+        for (int i = 0; i <= tam - 2; i++) {
+            if (atual->p.Idade > prox->p.Idade) {
+                // Troca os dados dos indivíduos
+                PESSOA temp = atual->p;
+                atual->p = prox->p;
+                prox->p = temp;
+            }
+            atual = prox;
+            prox = prox->pont;
+        }
+
+        // Imprime estado parcial após cada iteração externa
+        printf("Estado parcial da lista (Bubble Sort - Idade), passo %d:\n", j);
+        imprimirLista(*lista);
+    }
+}
+
+void ordenarPorAltura(NO **lista) {
+  NO *sorted = NULL;
+  NO *atual = *lista;
+
+  while (atual != NULL) {
+    NO *proximo = atual->pont;
+
+    if (sorted == NULL || atual->p.Altura < sorted->p.Altura) {
+      atual->pont = sorted;
+      sorted = atual;
+    } else {
+      NO *temp = sorted;
+      while (temp->pont != NULL && temp->pont->p.Altura < atual->p.Altura) {
+        temp = temp->pont;
+      }
+      atual->pont = temp->pont;
+      temp->pont = atual;
+    }
+
+    atual = proximo;
+
+    printf("Estado parcial da lista (Insertion Sort - Altura):\n");
+    imprimirLista(sorted);
+  }
+
+  *lista = sorted;
+}
 
 
-void main()
+
+int main()
 {
   int TAM;
   printf("Bem-vindo ao sistema de cadastros!\n");
@@ -159,6 +228,9 @@ pedro.Idade = 45;
 pedro.Altura = 1.78f;
 empilhar(&lista, pedro);
 
-printf("%s %s", nomePedro,nomeAna);
+int tam = tamanhoLista(lista);
+bubbleSortPorIdade(&lista, tam);
+ordenarPorAltura(&lista);
 
+return 0;
 }
