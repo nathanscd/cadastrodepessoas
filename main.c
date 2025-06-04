@@ -20,6 +20,21 @@ void empilhar (NO **pilha, PESSOA pessoa){
     *pilha=novono;
 }
 
+PESSOA desempilhar(NO **pilha) {
+  PESSOA vazio = {"", "", 0, 0.0f};
+  if (*pilha == NULL) {
+    printf("Pilha vazia! Nada para desempilhar.\n");
+    return vazio;
+  }
+  NO *temp = *pilha;
+  PESSOA pessoa = temp->p;
+  *pilha = temp->pont;
+  free(temp);
+  return pessoa;
+}
+
+
+
 void main()
 {
   int TAM;
@@ -122,8 +137,28 @@ void main()
     printf("Nome: %s\n", atual->p.Nome);
     printf("CPF: %s\n", atual->p.CPF);
     printf("Idade: %d\n", atual->p.Idade);
-    printf("Altura: %0.10f\n", atual->p.Altura);
+    printf("Altura: %0.2f\n", atual->p.Altura);
     printf("-----------\n");
     atual = atual->pont;
   }
+
+PESSOA removido = desempilhar(&lista);
+printf("Desempilhado: %s\n", removido.Nome);
+
+PESSOA ana;
+char nomeAna[20] = "Ana";
+char cpfAna[12] = "11111111111";
+ana.Idade = 31;
+ana.Altura = 1.67f;
+empilhar(&lista, ana);
+
+PESSOA pedro;
+char nomePedro[20] = "Pedro";
+char cpfPedro[12] = "22222222222";
+pedro.Idade = 45;
+pedro.Altura = 1.78f;
+empilhar(&lista, pedro);
+
+printf("%s %s", nomePedro,nomeAna);
+
 }
