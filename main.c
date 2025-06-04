@@ -1,41 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct PESSOA
-{
+typedef struct PESSOA{
   char Nome[20];
   char CPF[11];
   int Idade;
   float Altura;
 } PESSOA;
 
-typedef struct NO
-{
+typedef struct NO{
   PESSOA p;
   struct NO *pont;
 } NO;
 
-void insfinal(NO **lista, int valor)
-{
-  NO *novono = (NO *)malloc(sizeof(NO));
-  novono->PESSOA p = valor;
-  novono->pont = NULL;
-  if (*lista == NULL)
-  {
-    *lista = novono;
-  }
-  else
-  {
-    NO *aux = *lista;
-    while (aux->pont != NULL)
-    {
-      aux = aux->pont;
-    }
-    aux->pont = novono;
-  }
+void empilhar (NO **pilha, PESSOA pessoa){
+    NO *novono=(NO*)malloc (sizeof(NO));
+    novono->p=pessoa;
+    novono->pont=*pilha;
+    *pilha=novono;
 }
 
-int main(void)
+void main()
 {
   int TAM;
   printf("Bem-vindo ao sistema de cadastros!\n");
@@ -127,19 +112,18 @@ int main(void)
   }
 
   NO *lista = NULL;
-  for (int i = 0; i < TAM - 1; i++)
-  {
-    insfinal(&lista, ind[i]);
+  for (int i = 0; i < TAM; i++){
+    empilhar(&lista, pessoas[i]);
   }
 
   printf("\nLista de Pessoas:\n");
-  for (int i = 0; i < TAM; i++)
-  {
-    printf("Pessoa %d:\n", i + 1);
-    printf("Nome: %s\n", pessoas[i].Nome);
-    printf("CPF: %s\n", pessoas[i].CPF);
-    printf("Idade: %d\n", pessoas[i].Idade);
-    printf("Altura: %.2f\n", pessoas[i].Altura);
-    printf("---------\n");
+  NO *atual = lista;
+  while(atual != NULL) {
+    printf("Nome: %s\n", atual->p.Nome);
+    printf("CPF: %s\n", atual->p.CPF);
+    printf("Idade: %d\n", atual->p.Idade);
+    printf("Altura: %0.10f\n", atual->p.Altura);
+    printf("-----------\n");
+    atual = atual->pont;
   }
 }
